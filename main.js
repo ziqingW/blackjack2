@@ -1,7 +1,7 @@
 $(document).ready(function(){
     var bankroll, dealer, player;
     var decks = [];
-
+    
 // constructor to make cards 
     function Card(suit, value) {
         this.suit = suit;
@@ -12,6 +12,7 @@ $(document).ready(function(){
             this.value = [1, 11];
         } else {
         this.value = value;
+        this.facedown = false;
     }
     }
 // make a deck of 52 cards    
@@ -32,7 +33,7 @@ $(document).ready(function(){
         return deck.splice(dice, 1)[0];
     }
 // player constructor
-    function Player(name, bank, deck) {
+    function Player(name, bank) {
         this.name = name;
         this.bank = bank;
         this.hands = [];
@@ -43,8 +44,9 @@ $(document).ready(function(){
         this.bust = false;
         this.bj = false;
         this.bet = 0;
+        
         this.drawCard = function(){
-            this.hands.push(draw(deck));
+            this.hands.push(draw(decks));
         };
         this.showCard = function(){
             var newCard = this.hands[this.hands.length-1];
@@ -53,9 +55,11 @@ $(document).ready(function(){
             $(cardImagePanel).append(`<img src=${cardImagesSrc}>`);
         };
         this.hideCard = function() {
+            var newCard = this.hands[this.hands.length-1];
             var cardImagesSrc = `images/card_back.png`;
             var cardImagePanel = `#${this.name}-card-panel`;
             $(cardImagePanel).append(`<img src=${cardImagesSrc}>`);
+            newCard.facedown = true;
         };
         this.handPoints = function(){
             var points1 = 0;
@@ -71,20 +75,13 @@ $(document).ready(function(){
             }
             return [points1, points2];
             };
-        this.results = function(){
-            if (this.hands.length ==2 && (this.handPoints[0] == 21 || this.handPoints[1] == 21)) {
-                this.bj = true;
-            } else if (this.handPoints[0] > 21) {
-                this.bust = true;
-         }   // } else if (this.handPoints)
-        };
         this.startbet = function(amount) {
             this.bet = amount;
         };
         this.double = function() {
             this.bet *= 2;
         };
-        this.reset = function() {
+        this.reSet = function() {
             this.hands = [];
             this.bet = 0;
             this.win = false;
@@ -94,14 +91,15 @@ $(document).ready(function(){
         }
 //bet button
     function betButton() {
+        $('.bet-panel').html('<input type="number" id="bet-input" placeholder="Your bet" required><button id="bet-button">OK</button>');
         $('#bet-button').click(function(){
             if (parseInt($('#bet-input').val()) > 0 && parseInt($('#bet-input').val()) <= player.bank) {
-                $('.bet-panel').css('visibility', 'hidden');
                 $('#message').text('Game starts!');
                 player.startbet($('#bet-input').val());
-                $('#bet').text(player.bet);
+                $('.bet-panel').empty();
                 $('#warning').empty();
-                gameBegin();
+                console.log("betted");
+                playerTurn();
             } else {
                 $('#warning').html('<h5 style="color: red;">Please bet a correct number!</h5>');
         }
@@ -111,25 +109,11 @@ $(document).ready(function(){
     function showPoints(p) {
         var currentPoints = p.handPoints();
         var pointsRef = "#" + p.name + "P";
-        console.log(pointsRef);
-        console.log(p.hands);
-        console.log(currentPoints);
         if (currentPoints[0] == currentPoints [1]) {
             $(pointsRef).html(`<p>Points: ${currentPoints[0]}</p>`);
         } else {
             $(pointsRef).html(`<p>Points: ${currentPoints[0]} or ${currentPoints[1]}</p>`);
         }
-    }
-// results conclusion
-    function conclusion(p,d) {
-        if (p.bj) {
-            if (!d.bj) {
-            p.win = true;
-            p.wins ++;
-            $('#message').text("It's a Blackjack!");
-            p.bank  += p.bet;
-        } else {$('#message').text("It's a draw!");}
-    } else if ()
     }
 // info panel update
     function infoPanel() {
@@ -139,9 +123,195 @@ $(document).ready(function(){
         $('#lose').text(player.loses);
         $('#bj').text(player.bjs);
     }
-
+//hit a card
+    function hit(p) {
+        p.drawCard();
+        p.showCard();
+        showPoints(p);
+        if (p.handPoints()[0] > 21) {
+            p.bust = true;
+            
+        } else if (p.handPoints()[0] == 21 || p.handPoints()[1] == 21) {
+            p.win = true;
+        }
+        console.log("hit once");
+    }
+// hit button
+    function hitButton() {
+        $('#button_hit').click(function() {
+            hit(player);
+            if (player.bust) {
+                dealerTurn();
+            }
+        });
+    }
+//double button
+    function doubleButton () {
+        $('#button_double').click(function() {
+            player.double();
+            
+            hit(player);
+            console.log("doubled");
+            if (!player.bust) {
+            dealerTurn();
+            }
+        });
+        
+    }
+// stand button
+    function standButton () {
+        $('#button_stand').click(function() {
+            console.log("stand");
+            dealerTurn();
+        });
+        
+    }
+// surrender button
+    function surrenderButton () {
+        $('#button_surrender').click(function() {
+            player.bet /= 2;
+            dealer.win = true;
+            dealer.bet /= 2;
+            console.log("surrended");
+            conclusion(player, dealer);
+        });
+        
+    }
+// results conclusion
+    function conclusion(p, d) {
+        console.log("concluded");
+        if (p.bj && d.bj) {
+                $('#message').text("It's a draw! Take your bet back.");
+                console.log("1");
+                p.bjs ++;
+            } else if (p.bj && !d.bj) {
+                $('#message').text("You got the Blackjack!");
+                console.log("2");
+                p.bjs ++;
+                p.wins ++;
+                p.bank += p.bet;
+                d.bank -= d.bet;
+            } else if (d.bj && !p.bj) {
+                $('#message').text("You got Blackjacked!");
+                console.log("3");
+                p.bank -= p.bet;
+                p.loses ++;
+        } else {
+            if (p.win && d.win) {
+                $('#message').text("It's a draw! Take your bet back.");
+                console.log("4");
+            } else if (p.win && !d.win) {
+                $('#message').text("Congratulations, you win!");
+                console.log("5");
+                p.bank += p.bet;
+                d.bank -= d.bet;
+                p.wins ++;
+            } else if (d.win && !p.win) {
+                $('#message').text("Sorry, you lose.");
+                console.log("6");
+                p.bank -= p.bet;
+                p.loses ++;
+            } else {
+                if (p.bust) {
+                    $('#message').text("Sorry, you lose.");
+                    console.log("7");
+                    p.bank -= p.bet;
+                    p.loses ++;
+                } else if (d.bust && !p.bust) {
+                    $('#message').text("Congratulations, you win!");
+                    console.log("8");
+                    p.bank += p.bet;
+                    d.bank -= d.bet;
+                    p.wins ++;
+                }
+            }
+        }
+        infoPanel();
+        // replay(); 
+    }
+// replay
+    function replay() {
+        decks = makeDeck();
+        dealer.reSet();
+        player.reSet();
+        $("#bet-input").val("");
+        $(".points").empty();
+        $('#message').text("How much do you want to bet?");
+        $(".card-panel").empty();
+        betButton();
+        infoPanel();
+        console.log("replay begins!");
+    }
+// dealer's turn
+    function dealerTurn() {
+        console.log("dealer's turn");
+        $('#button_hit').off("click");
+        $('#button_double').off("click");
+        $('#button_stand').off("click");
+        $('#button_surrender').off("click");
+        dealer.hands.forEach(function(card) {
+            if (card.facedown) {
+                card.facedown = false;
+                var cardImagesSrc = `images/${card.name}_of_${card.suit}.png`;
+                $('img[src="images/card_back.png"]').attr('src', cardImagesSrc);
+            }
+        });
+        showPoints(dealer);
+        if (dealer.handPoints()[1] == 21) {
+            dealer.win = true;
+            dealer.bj = true;
+            console.log("d-1")
+        } else if (dealer.handPoints()[1] >= 17) {
+            console.log("d-2")
+        } else {
+            while(dealer.handPoints()[1] < 17) {
+                console.log("d-3")
+                hit(dealer);
+            }
+        }
+        if (!dealer.bust && !player.bust) {
+            if (dealer.handPoints()[1] < 21) {
+                if (player.handPoints()[1] < 21) {
+                    if (player.handPoints()[1] < dealer.handPoints()[1]) {
+                        console.log("d-4")
+                        dealer.win = true;
+                    } else if (dealer.handPoints()[1] < player.handPoints()[1]) {
+                        player.win = true;
+                        console.log("d-5")
+                    }
+                } else {
+                    if (player.handPoints()[0] < dealer.handPoints()[1]) {
+                        dealer.win = true;
+                        console.log("d-6")
+                    } else if (dealer.handPoints()[1] < player.handPoints()[0]) {
+                        player.win = true;
+                        console.log("d-7")
+                    }
+                }
+            } else {
+                if (player.handPoints()[1] < 21) {
+                    if (player.handPoints()[1] < dealer.handPoints()[0]) {
+                        dealer.win = true;
+                        console.log("d-8")
+                    } else if (dealer.handPoints()[0] < player.handPoints()[1]) {
+                        player.win = true;
+                        console.log("d-9")
+                    }
+                } else {
+                    if (player.handPoints()[0] < dealer.handPoints()[0]) {
+                        dealer.win = true;
+                        console.log("d-10")
+                    } else if (dealer.handPoints()[0] < player.handPoints()[0]) {
+                        player.win = true;
+                        console.log("d-11")
+                    }
+                }
+            }
+    }
+    conclusion(player, dealer);
+    }
 // game process
-    function gameBegin() {
+    function playerTurn() {
         dealer.drawCard();
         dealer.showCard();
         player.drawCard();
@@ -151,7 +321,18 @@ $(document).ready(function(){
         player.drawCard();
         player.showCard();
         showPoints(player);
-        player.results();
+        hitButton();
+        doubleButton();
+        standButton();
+        surrenderButton();
+
+        if (player.hands.length == 2 && player.handPoints()[1] == 21) {
+            player.bj = true;
+            player.win = true;
+            dealerTurn();
+        }
+        console.log("playerturn");
+        
     }
 
 // game start    
@@ -160,11 +341,10 @@ $(document).ready(function(){
         $(".modal-back").css("display","none");
         bankroll = parseInt($('#bank').val());
         decks = makeDeck();
-        dealer = new Player('dealer', Number.MAX_SAFE_INTEGER, decks);
-        player = new Player('player', bankroll, decks);
+        dealer = new Player('dealer', Number.MAX_SAFE_INTEGER);
+        player = new Player('player', bankroll);
         betButton();
         infoPanel();    
         }
         });  
-    
 }); 
