@@ -7,7 +7,7 @@
     <title>BlackJack</title>
     <link rel="stylesheet" href="main.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Lobster" rel="stylesheet">
 </head>
 
 <body class="body-background">
@@ -18,6 +18,15 @@
                 <h5>How much did you bring?</h5>
                 <div class="container">
                     <input id="bank" type="number" placeholder="$ 1 - 1M" required><button id="modal-button">OK</button>
+                </div>
+                <div class="tutorial">
+                <p>How to play:</p>
+                <ul>
+                <li>Hit: Draw a card</li>
+                <li>Double: Double the bet, then draw a card</li>
+                <li>Stand: Finish your turn</li>
+                <li>Surrender: Drop you hand, lose half of your bet</li>
+                </ul>
                 </div>
             </div>
         </div>
@@ -58,13 +67,36 @@
 
     
     <div class="container button-panel">
+        <div class="row">
+            <div class="col-2"></div>
+        <div class="col-4 col-btn">
         <button id="button_hit">Hit</button>
+        </div>
+        <div class="col-4 col-btn">
         <button id="button_double">Double</button>
+        </div>
+        <div class="col-2"></div>
+        </div>
+        <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4 col-btn">
         <button id="button_stand">Stand</button>
+        </div>
+        <div class="col-4 col-btn">
         <button id="button_surrender">Surrender</button>
+        </div>
+        <div class="col-2"></div>
+    </div>
     </div>
     <div class="container text-center" id="warning"></div>
-    
+    <div class="replay-back">
+        <div class="modal-form replay-form">
+            <p>Play again?</p><div><button id="replay_yes">Yes</button><button id="replay_no">No</button></div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <footer class="footer text-center">Created by <span style="color:orange;">Ziqing</span></footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

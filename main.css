@@ -10,7 +10,6 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    
 }
 .modal-back h1{
     padding-top: 0.1em;
@@ -25,7 +24,7 @@
     max-width: 400px;
     min-width: 270px;
     width: 80%;
-    top: 20%;
+    top: 10%;
     background-color: white;
 }
 #bank {
@@ -39,6 +38,13 @@
 #modal-button {
     border: 2px solid grey;
     border-radius: 3px;
+}
+.tutorial ul{
+    text-align: left;   
+    margin-top: -0.8em;
+}
+.tutorial p {
+    color: red;
 }
 .tabletop {
     margin-top: 0.4em;
@@ -90,10 +96,65 @@
 .button-panel {
     margin-top: 1em;
 }
+.button-panel button {
+    border: 2px solid grey;
+    border-radius: 5px;
+    width: 80px;
+    height: 32px;
+    font-size: 0.8em;
+    margin-bottom: 0.3em;
+    box-shadow: 1px 1px 1px black;
+    font-weight: bold;
+    color: white;
+}
+#button_surrender {
+    background-color: red;
+}
+#button_hit, #button_double {
+    background-color: blue;
+}
+#button_stand {
+    background-color: green;
+}
 #warning {
     margin-top: 1em;
+}
+.col-btn{
+    text-align: center;
 }
 .message-panel {
     display: flex;
     justify-content: space-between;
+}
+.replay-back {
+    position: fixed;
+    z-index: 200;
+    background-color: rgba(255,255,255,0.2);
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    top: 0;
+}
+.replay-form {
+    display: flex;
+    justify-content: space-between;
+    max-width: 320px;
+    padding: 0.5em;
+    top: 75%;
+}
+.replay-form button {
+    border: 2px solid grey;
+    border-radius: 3px;
+    margin-right: 0.3em;
+    color: white;
+}
+#replay_yes {
+    background-color: green;
+}
+#replay_no {
+    background-color: red;
+}
+.footer {
+    font-family: 'Lobster', cursive; 
 }

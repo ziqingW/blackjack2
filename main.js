@@ -1,7 +1,13 @@
 $(document).ready(function(){
     var bankroll, dealer, player;
     var decks = [];
-    
+    $("#replay_yes").click(function(){
+        $('.replay-back').css("display", "none");
+        replay();
+    });
+    $("#replay_no").click(function(){
+        $(".replay-form").html("<h6>Thank you for playing!</h6><p>Find more games at <span><a href='http://tornado.bukarle.com'>tornado.bukarle.com</a></span></p>");
+    });
 // constructor to make cards 
     function Card(suit, value) {
         this.suit = suit;
@@ -95,10 +101,11 @@ $(document).ready(function(){
         $('#bet-button').click(function(){
             if (parseInt($('#bet-input').val()) > 0 && parseInt($('#bet-input').val()) <= player.bank) {
                 $('#message').text('Game starts!');
-                player.startbet($('#bet-input').val());
+                player.startbet(parseInt($('#bet-input').val()));
                 $('.bet-panel').empty();
                 $('#warning').empty();
                 console.log("betted");
+                console.log(player.bet);
                 playerTurn();
             } else {
                 $('#warning').html('<h5 style="color: red;">Please bet a correct number!</h5>');
@@ -141,19 +148,20 @@ $(document).ready(function(){
         $('#button_hit').click(function() {
             hit(player);
             if (player.bust) {
-                dealerTurn();
-            }
+                conclusion(player, dealer);
+            } 
         });
     }
 //double button
     function doubleButton () {
         $('#button_double').click(function() {
             player.double();
-            
             hit(player);
             console.log("doubled");
             if (!player.bust) {
             dealerTurn();
+            } else {
+                conclusion(player, dealer);
             }
         });
         
@@ -189,12 +197,12 @@ $(document).ready(function(){
                 console.log("2");
                 p.bjs ++;
                 p.wins ++;
-                p.bank += p.bet;
-                d.bank -= d.bet;
+                p.bank += p.bet * 1.5;
+                
             } else if (d.bj && !p.bj) {
                 $('#message').text("You got Blackjacked!");
                 console.log("3");
-                p.bank -= p.bet;
+                p.bank -= p.bet * 1.5;
                 p.loses ++;
         } else {
             if (p.win && d.win) {
@@ -211,7 +219,7 @@ $(document).ready(function(){
                 console.log("6");
                 p.bank -= p.bet;
                 p.loses ++;
-            } else {
+            }  else {
                 if (p.bust) {
                     $('#message').text("Sorry, you lose.");
                     console.log("7");
@@ -223,10 +231,19 @@ $(document).ready(function(){
                     p.bank += p.bet;
                     d.bank -= d.bet;
                     p.wins ++;
-                }
+                } else {
+                $('#message').text("It's a draw! Take your bet back.");
+                console.log("draw-01");
+            }
             }
         }
         infoPanel();
+        $("#bet-button").off("click");
+        $('#button_hit').off("click");
+        $('#button_double').off("click");
+        $('#button_stand').off("click");
+        $('#button_surrender').off("click");
+        $('.replay-back').css("display", "flex");
         // replay(); 
     }
 // replay
@@ -257,57 +274,58 @@ $(document).ready(function(){
             }
         });
         showPoints(dealer);
-        if (dealer.handPoints()[1] == 21) {
-            dealer.win = true;
-            dealer.bj = true;
-            console.log("d-1")
-        } else if (dealer.handPoints()[1] >= 17) {
-            console.log("d-2")
-        } else {
-            while(dealer.handPoints()[1] < 17) {
-                console.log("d-3")
-                hit(dealer);
+        if (!player.bj){
+            if (dealer.handPoints()[1] == 21) {
+                dealer.bj = true;
+                console.log("d-1")
+            } else if (dealer.handPoints()[1] >= 17) {
+                console.log("d-2")
+            } else {
+                while(dealer.handPoints()[1] < 17) {
+                    console.log("d-3")
+                    hit(dealer);
+                }
+            }
+            if (!dealer.bust && !player.bust) {
+                if (dealer.handPoints()[1] < 21) {
+                    if (player.handPoints()[1] < 21) {
+                        if (player.handPoints()[1] < dealer.handPoints()[1]) {
+                            console.log("d-4")
+                            dealer.win = true;
+                        } else if (dealer.handPoints()[1] < player.handPoints()[1]) {
+                            player.win = true;
+                            console.log("d-5")
+                        } 
+                    } else {
+                        if (player.handPoints()[0] < dealer.handPoints()[1]) {
+                            dealer.win = true;
+                            console.log("d-6")
+                        } else if (dealer.handPoints()[1] < player.handPoints()[0]) {
+                            player.win = true;
+                            console.log("d-7")
+                        }
+                    }
+                } else {
+                    if (player.handPoints()[1] < 21) {
+                        if (player.handPoints()[1] < dealer.handPoints()[0]) {
+                            dealer.win = true;
+                            console.log("d-8")
+                        } else if (dealer.handPoints()[0] < player.handPoints()[1]) {
+                            player.win = true;
+                            console.log("d-9")
+                        }
+                    } else {
+                        if (player.handPoints()[0] < dealer.handPoints()[0]) {
+                            dealer.win = true;
+                            console.log("d-10")
+                        } else if (dealer.handPoints()[0] < player.handPoints()[0]) {
+                            player.win = true;
+                            console.log("d-11")
+                        }
+                    }
+                }
             }
         }
-        if (!dealer.bust && !player.bust) {
-            if (dealer.handPoints()[1] < 21) {
-                if (player.handPoints()[1] < 21) {
-                    if (player.handPoints()[1] < dealer.handPoints()[1]) {
-                        console.log("d-4")
-                        dealer.win = true;
-                    } else if (dealer.handPoints()[1] < player.handPoints()[1]) {
-                        player.win = true;
-                        console.log("d-5")
-                    }
-                } else {
-                    if (player.handPoints()[0] < dealer.handPoints()[1]) {
-                        dealer.win = true;
-                        console.log("d-6")
-                    } else if (dealer.handPoints()[1] < player.handPoints()[0]) {
-                        player.win = true;
-                        console.log("d-7")
-                    }
-                }
-            } else {
-                if (player.handPoints()[1] < 21) {
-                    if (player.handPoints()[1] < dealer.handPoints()[0]) {
-                        dealer.win = true;
-                        console.log("d-8")
-                    } else if (dealer.handPoints()[0] < player.handPoints()[1]) {
-                        player.win = true;
-                        console.log("d-9")
-                    }
-                } else {
-                    if (player.handPoints()[0] < dealer.handPoints()[0]) {
-                        dealer.win = true;
-                        console.log("d-10")
-                    } else if (dealer.handPoints()[0] < player.handPoints()[0]) {
-                        player.win = true;
-                        console.log("d-11")
-                    }
-                }
-            }
-    }
     conclusion(player, dealer);
     }
 // game process
