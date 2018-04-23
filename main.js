@@ -333,6 +333,12 @@ $(document).ready(function(){
                 }
             }
         }
+        else {
+            if (dealer.hands.length == 2 && dealer.handPoints()[1] == 21) {
+                dealer.bj = true;
+                console.log("d-12");
+            }
+        }
     conclusion(player, dealer);
     }
 // game process
