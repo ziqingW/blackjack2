@@ -246,7 +246,10 @@ $(document).ready(function(){
         $('#button_double').off("click");
         $('#button_stand').off("click");
         $('#button_surrender').off("click");
-        $('.replay-back').css("display", "flex");
+        setTimeout(function(){
+            $('.replay-back').css("display", "flex");    
+        }, 1000);
+        
         // replay(); 
     }
 // replay
