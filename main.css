@@ -55,6 +55,9 @@
     align-items: flex-start;
     flex-wrap: wrap;
 }
+.card-panel.notLoaded {
+    right: -350px;
+}
 .card-panel img {
     width: 19%;
     margin-right: 0.1em;

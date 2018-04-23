@@ -58,8 +58,11 @@ $(document).ready(function(){
             var newCard = this.hands[this.hands.length-1];
             var cardImagesSrc = `images/${newCard.name}_of_${newCard.suit}.png`;
             var cardImagePanel = `#${this.name}-card-panel`;
+            console.log("show a card");
             $(cardImagePanel).append(`<img src=${cardImagesSrc}>`);
-        };
+            
+            console.log($(".card-panel img").css("visibility"));
+        };    
         this.hideCard = function() {
             var newCard = this.hands[this.hands.length-1];
             var cardImagesSrc = `images/card_back.png`;
