@@ -249,7 +249,7 @@ $(document).ready(function(){
         $('#button_surrender').off("click");
         setTimeout(function(){
             $('.replay-back').css("display", "flex");    
-        }, 1000);
+        }, 2000);
         
         // replay(); 
     }
