@@ -6,7 +6,8 @@ $(document).ready(function(){
         replay();
     });
     $("#replay_no").click(function(){
-        $(".replay-form").html("<h6>Thank you for playing!</h6><p>Find more games at <span><a href='http://tornado.bukarle.com'>tornado.bukarle.com</a></span></p>");
+        $(".replay-form").css("display", "block");
+        $(".replay-form").html("<h6 class='text-center'>Thank you for playing!</h6><p class='text-center'>Find more games at <span><a href='http://tornado.bukarle.com'>tornado.bukarle.com</a></span></p>");
     });
 // constructor to make cards 
     function Card(suit, value) {
