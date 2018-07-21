@@ -1,5 +1,6 @@
 # Blackjack
 This Single-Page-App was created with JQuery. Just like what Blackjack should be, it's simple and fun.
+A project assigned by DigitalCrafts.
 
 ## How to play
 1. Input the amount of money you want to start with.
@@ -15,8 +16,8 @@ This Single-Page-App was created with JQuery. Just like what Blackjack should be
 ___
 ## Nerd's thinking
 #### Gains:
--Simple to design
--No requirement for other library support
+- Simple to design
+- No requirement for other library support
 
 #### Pains:
 - The logic behind the game was relatively complicated
