@@ -15,11 +15,11 @@ A project assigned by DigitalCrafts.
 
 ___
 ## Nerd's thinking
-#### Gains:
+### Gains:
 - Simple to design
 - No requirement for other library support
 
-#### Pains:
+### Pains:
 - The logic behind the game was relatively complicated
 - Double values of Ace was the key but also a Bug's hotbed for the program
 - Too many functions and variables
