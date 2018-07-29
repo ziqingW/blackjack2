@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/ziqingW/blackjack2.png)](https://travis-ci.org/ziqingW/blackjack2)
 # Blackjack
 This Single-Page-App was created with JQuery. Just like what Blackjack should be, it's simple and fun.
 A project assigned by DigitalCrafts.
