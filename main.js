@@ -347,6 +347,6 @@ $(document).ready(function() {
   });
   $("#replay_no").click(function() {
     $(".replay-form").css("display", "block");
-    $(".replay-form").html("<h6 class='text-center'>Thank you for playing!</h6>");
+    $(".replay-form").html("<h6 class='text-center'>Thank you for playing my game!</h6>");
   });
 });
