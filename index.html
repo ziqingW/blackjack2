@@ -1,94 +1,104 @@
 <!DOCTYPE html>
 <html>
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackJack</title>
     <link rel="stylesheet" href="main.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto|Lobster" rel="stylesheet">
-</head>
+  </head>
 
-<body class="body-background">
+  <body class="body-background">
     <div class="modal-back">
-        <div class="modal-form">
-            <div class="container text-center">
-                <h1>Welcome to Blackjack</h1>
-                <h5>How much did you bring?</h5>
-                <div class="container">
-                    <input id="bank" type="number" placeholder="$ 1 - 1M" required><button id="modal-button">OK</button>
-                </div>
-                <div class="tutorial">
-                <p>How to play:</p>
-                <ul>
-                <li>Hit: Draw a card</li>
-                <li>Double: Double the bet, then draw a card</li>
-                <li>Stand: Finish your turn</li>
-                <li>Surrender: Drop you hand, lose half of your bet</li>
-                </ul>
-                </div>
-            </div>
+      <div class="modal-form">
+        <div class="container text-center">
+          <h1>Welcome to Blackjack</h1>
+          <p>&#x2664;&#x2665;&#x2667;&#x2666;&#x2660;&#x2661;&#x2663;&#x2662;&#x2660;&#x2661;&#x2663;&#x2662;&#x2664;&#x2665;&#x2667;&#x2666;</p>
+          <p>&#x2694;</p>
+          <h5>How much did you bring?</h5>
+          <div class="container">
+            <input id="bank" type="number" placeholder="$ 1 - 1M" required>
+            <button type="button" class="btn btn-success" id="modal-button">OK</button>
+            <p id="bankroll-warning"></p>
+          </div>
+          <br />
+          <div class="tutorial">
+            <p>How to play</p>
+            <ul>
+              <li><b>Hit</b>: <i>Draw a card</i></li>
+              <li><b>Double</b>: <i>Double the bet, then draw a card</i></li>
+              <li><b>Stand</b>: <i>Finish your turn</i></li>
+              <li><b>Surrender</b>: <i>Drop you hand, lose half of your bet</i></li>
+              <li><i>If anyone has a <b>BlackJack</b>, the opposite has to have a BJ too to make a draw; otherwise, the one with BJ will win 150% of the bet!</i></li>
+            </ul>
+          </div>
         </div>
+      </div>
     </div>
     <div class="info-panel">
-        <div class="row">
-            <h6 class="col-6">Bankroll: $<span id="account"></span></h6>
-            <h6 class="col-6">Bet: $<span id="bet"></span></h6>
-        </div>
-            <div class="row">
-            <h6 class="col-4">Wins: <span id="win"></span></h6>
-            <h6 class="col-4">Loses: <span id="lose"></span></h6>
-            <h6 class="col-4">B'Js: <span id="bj"></span></h6>
-        </div>
+      <div class="row">
+        <h6 class="col-6">Bankroll: $<span id="account"></span></h6>
+        <h6 class="col-6">Bet: $<span id="bet"></span></h6>
+      </div>
+      <div class="row">
+        <h6 class="col-4">Wins: <span id="win"></span></h6>
+        <h6 class="col-4">Loses: <span id="lose"></span></h6>
+        <h6 class="col-4">B'Js: <span id="bj"></span></h6>
+      </div>
     </div>
     <div class="tabletop">
-            <div class="container message-panel">
-            <div>
-                <h6>Dealer: <span class="points" id="dealerP"></span></h6>
-            </div>
-                <div id="message">How much do you want to bet?</div>
-        </div>
-            <div class="card-panel" id="dealer-card-panel">
-            </div>
-    </div>
-        <hr>
+      <div class="container message-panel">
         <div>
-            <div class="container message-panel">
-            <div>
-                <h6>Player: <span class="points" id="playerP"></span></h6>
-            </div>
-            <div class="bet-panel">
-            </div>
+          <h6>Dealer: <span class="points" id="dealerP"></span></h6>
         </div>
-            <div class="card-panel" id="player-card-panel"></div>
-        </div>
-    <div class="container button-panel">
-        <div class="row">
-            <div class="col-2"></div>
-        <div class="col-4 col-btn">
-        <button id="button_hit">Hit</button>
-        </div>
-        <div class="col-4 col-btn">
-        <button id="button_double">Double</button>
-        </div>
-        <div class="col-2"></div>
-        </div>
-        <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4 col-btn">
-        <button id="button_stand">Stand</button>
-        </div>
-        <div class="col-4 col-btn">
-        <button id="button_surrender">Surrender</button>
-        </div>
-        <div class="col-2"></div>
+        <div id="message">How much do you want to bet?</div>
+      </div>
+      <div class="card-panel" id="dealer-card-panel">
+      </div>
     </div>
+    <hr>
+    <div>
+      <div class="container message-panel">
+        <div>
+          <h6>Player: <span class="points" id="playerP"></span></h6>
+        </div>
+        <div class="bet-panel">
+        </div>
+      </div>
+      <div class="card-panel" id="player-card-panel"></div>
+    </div>
+    <div class="container button-panel">
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4 col-btn">
+          <button type="button" id="button_hit" class="btn btn-primary">Hit</button>
+        </div>
+        <div class="col-4 col-btn">
+          <button type="button" id="button_double" class="btn btn-warning">Double</button>
+        </div>
+        <div class="col-2"></div>
+      </div>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4 col-btn">
+          <button type="button" class="btn btn-secondary" id="button_stand">Stand</button>
+        </div>
+        <div class="col-4 col-btn">
+          <button type="button" class="btn btn-danger" id="button_surrender">Surrender</button>
+        </div>
+        <div class="col-2"></div>
+      </div>
     </div>
     <div class="container text-center" id="warning"></div>
     <div class="replay-back">
-        <div class="modal-form replay-form">
-            <p>Play again?</p><div><button id="replay_yes">Yes</button><button id="replay_no">No</button></div>
-        </div>
+      <div class="modal-form replay-form">
+        <p>Play again?</p>
+        <div>
+          <button id="replay_yes" type="button" class="btn btn-primary">Yes</button>
+          <button id="replay_no" type="button" class="btn btn-secondary">No</button></div>
+      </div>
     </div>
     <br>
     <br>
@@ -97,5 +107,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="main.js"></script>
-</body>
+  </body>
+
 </html>
