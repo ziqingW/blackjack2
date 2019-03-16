@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackJack</title>
-    <link rel="stylesheet" href="main.css" type="text/css">
+    <link rel="stylesheet" href="moreFeature.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- changed here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto|Lobster" rel="stylesheet">
   </head>
 
@@ -25,29 +27,47 @@
           </div>
           <br />
           <div class="tutorial">
-            <p>How to play</p>
-            <ul>
+            <!-- changed here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div tabindex="0" class="tutorial-title" data-toggle="popover" data-trigger="focus" data-html="true" title="How to play" data-placement="bottom" data-content="<ul style='padding:0; margin-top: 1em; list-style-type: none;'>
               <li><b>Hit</b>: <i>Draw a card</i></li>
               <li><b>Double</b>: <i>Double the bet, then draw a card</i></li>
               <li><b>Stand</b>: <i>Finish your turn</i></li>
               <li><b>Surrender</b>: <i>Drop you hand, lose half of your bet</i></li>
               <li><i>If anyone has a <b>BlackJack</b>, the opposite has to have a BJ too to make a draw; otherwise, the one with BJ will win 150% of the bet!</i></li>
-            </ul>
+            </ul>">
+              <i class="fa fa-question-circle"></i>
+              <p>How to play</p>
+            </div>
+            <!-- changed here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
           </div>
         </div>
       </div>
     </div>
-    <div class="info-panel">
-      <div class="row">
-        <h6 class="col-6">Bankroll: $<span id="account"></span></h6>
-        <h6 class="col-6">Bet: $<span id="bet"></span></h6>
+    <!-- changed here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <div class="info-panel-help container">
+      <div class="info-panel">
+        <div class="row">
+          <h6 class="col-6">Bankroll: $<span id="account"></span></h6>
+          <h6 class="col-6">Bet: $<span id="bet">0</span></h6>
+        </div>
+        <div class="row">
+          <h6 class="col-4">Wins: <span id="win"></span></h6>
+          <h6 class="col-4">Loses: <span id="lose"></span></h6>
+          <h6 class="col-4">B'Js: <span id="bj"></span></h6>
+        </div>
       </div>
-      <div class="row">
-        <h6 class="col-4">Wins: <span id="win"></span></h6>
-        <h6 class="col-4">Loses: <span id="lose"></span></h6>
-        <h6 class="col-4">B'Js: <span id="bj"></span></h6>
+      <!-- changed here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <div tabindex="0" class="tutorial-title" data-toggle="popover" data-trigger="focus" data-html="true" title="How to play" data-placement="bottom" data-content="<ul style='padding:0; margin-top: 1em; list-style-type: none;'>
+      <li><b>Hit</b>: <i>Draw a card</i></li>
+      <li><b>Double</b>: <i>Double the bet, then draw a card</i></li>
+      <li><b>Stand</b>: <i>Finish your turn</i></li>
+      <li><b>Surrender</b>: <i>Drop you hand, lose half of your bet</i></li>
+      <li><i>If anyone has a <b>BlackJack</b>, the opposite has to have a BJ too to make a draw; otherwise, the one with BJ will win 150% of the bet!</i></li>
+    </ul>">
+        <i class="fa fa-question-circle"></i>
       </div>
     </div>
+    <!-- changed here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <div class="tabletop">
       <div class="container message-panel">
         <div>
@@ -69,6 +89,9 @@
       </div>
       <div class="card-panel" id="player-card-panel"></div>
     </div>
+    <!--changed here~~~~~~~~~~~~~~  -->
+    <hr>
+    <!--changed here~~~~~~~~~~~~~~  -->
     <div class="container button-panel">
       <div class="row">
         <div class="col-2"></div>
@@ -91,7 +114,6 @@
         <div class="col-2"></div>
       </div>
     </div>
-    <div class="container text-center" id="warning"></div>
     <div class="replay-back">
       <div class="modal-form replay-form">
         <p>Play again?</p>
@@ -106,7 +128,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="main.js"></script>
+    <script src="moreFeature.js"></script>
   </body>
 
 </html>

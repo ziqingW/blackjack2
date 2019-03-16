@@ -95,29 +95,22 @@ $(document).ready(function() {
     };
   }
   //bet button
+  // updated
   function betButton() {
-    $('.bet-panel').html('<input type="number" id="bet-input" placeholder="Your bet" required><button id="bet-button" type="button" class="btn btn-success">OK</button>');
-    $('#bet-button').click(function() {
-      if (parseInt($('#bet-input').val()) > 0 && parseInt($('#bet-input').val()) <= player.bank) {
-        $('#message').text('Game starts!');
-        player.startbet(parseInt($('#bet-input').val()));
-        $('.bet-panel').empty();
-        $('#warning').empty();
-        // console.log("betted");
-        // console.log(player.bet);
-        playerTurn();
-      } else if (parseInt($('#bet-input').val()) > player.bank) {
-        $('#warning').html('<h5 style="color: red;">You don"t have enough money!</h5>');
-        $('#bet-input').val('');
-      } else if (parseInt($('#bet-input').val()) <= 0) {
-        $('#warning').html('<h5 style="color: red;">Hmm, I can see the trick, but bet the true money please!</h5>');
-        $('#bet-input').val('');
-      } else {
-        $('#warning').html('<h5 style="color: red;">Numbers ONLY, please</h5>');
-        $('#bet-input').val('');
+// changed here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    $('.bet-panel').html('<button id="bet-button-1" type="button" class="bet-button btn btn-success">$1</button><button type="button" id="bet-button-5" class="bet-button btn btn-success">$5</button>')
+    $('.bet-button').click(function(event) {
+          $('#message').text('Game starts!');
+          player.startbet(parseInt($(this).text()[1]));
+          // console.log(parseInt($(this).text()[1]))
+          $('#bet').text(player.bet);
+          $('.bet-panel').empty();
+
+          // console.log("betted");
+          // console.log(player.bet);
+          playerTurn();
+        });
       }
-    });
-  }
   // display points on page
   function showPoints(currentPlayer) {
     let currentPoints = currentPlayer.handPoints();
@@ -131,19 +124,20 @@ $(document).ready(function() {
   // info panel update
   function infoPanel() {
     $('#account').text(player.bank);
-    $('#bet').text(player.bet);
+    // changed here~~~~~~~~~~~~~~~~~~~~~~~~
     $('#win').text(player.wins);
     $('#lose').text(player.loses);
     $('#bj').text(player.bjs);
   }
   //hit a card
+  // updated
   function hit(currentPlayer) {
     currentPlayer.drawCard();
     currentPlayer.showCard();
     showPoints(currentPlayer);
     if (currentPlayer.handPoints()[0] > 21) {
       currentPlayer.bust = true;
-    } else if (currentPlayer.handPoints()[0] == 21 || currentPlayer.handPoints()[1] == 21) {
+    } else if (currentPlayer.handPoints().includes(21)) {
       currentPlayer.win = true;
     }
     // console.log("hit once");
@@ -256,7 +250,8 @@ $(document).ready(function() {
     currentDeck = makeDeck();
     dealer.reSet();
     player.reSet();
-    $("#bet-input").val("");
+    // changed here !!~~~~~~~~~~~~~~~~~
+    $('#bet').text("0");
     $(".points").empty();
     $('#message').text("How much do you want to bet?");
     $(".card-panel").empty();
@@ -279,19 +274,34 @@ $(document).ready(function() {
       }
     });
     showPoints(dealer);
+    // big updated!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if (dealer.handPoints()[1] == 21) {
       dealer.bj = true;
-    } else if (Math.max(...dealer.handPoints()) <= 21 && Math.max(...player.handPoints()) < Math.max(...dealer.handPoints())) {
-      dealer.win = true;
     } else {
-      while (Math.max(...dealer.handPoints()) < 17) {
-        hit(dealer);
-      }
-      if (!dealer.bust && !player.bust) {
-        if (Math.max(...player.handPoints()) < Math.max(...dealer.handPoints())) {
-          dealer.win = true;
-        } else if (Math.max(...player.handPoints()) > Math.max(...dealer.handPoints())) {
-          player.win = true;
+      if (!player.bj) {
+        playerCurrentPoints = player.handPoints().filter(num => {
+          return num < 21
+        })
+        if (Math.max(...dealer.handPoints()) >= 17) {
+          if (Math.max(...playerCurrentPoints) > Math.max(...dealer.handPoints())) {
+            player.win = true;
+          } else if (Math.max(...playerCurrentPoints) < Math.max(...dealer.handPoints())) {
+            dealer.win = true;
+          }
+        } else {
+          while (Math.max(...dealer.handPoints()) < 17) {
+            hit(dealer);
+          }
+          if (!dealer.bust) {
+            dealerCurrentPoints = dealer.handPoints().filter(num => {
+              return num <= 21
+            })
+            if (Math.max(...playerCurrentPoints) < Math.max(...dealerCurrentPoints)) {
+              dealer.win = true;
+            } else if (Math.max(...playerCurrentPoints) > Math.max(...dealerCurrentPoints)) {
+              player.win = true;
+            }
+          }
         }
       }
     }
@@ -349,4 +359,8 @@ $(document).ready(function() {
     $(".replay-form").css("display", "block");
     $(".replay-form").html("<h6 class='text-center'>Thank you for playing my game!</h6>");
   });
+
+  $('.tutorial-title').popover({
+    trigger: 'focus'
+  })
 });
